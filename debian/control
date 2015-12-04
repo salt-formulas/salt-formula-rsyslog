@@ -1,0 +1,15 @@
+Source: salt-formula-rsyslog
+Maintainer: Jan Kaufman <jan.kaufman@tcpcloud.eu>
+Section: admin
+Priority: optional
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.6
+Homepage: http://www.tcpcloud.eu
+Vcs-Browser: https://github.com/tcpcloud/salt-formula-rsyslog
+Vcs-Git: https://github.com/tcpcloud/salt-formula-rsyslog.git
+
+Package: salt-formula-rsyslog
+Architecture: all
+Depends: ${misc:Depends}, salt-master, reclass
+Description: rsyslog salt formula
+ Install and configure rsyslog system.
