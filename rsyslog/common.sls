@@ -1,8 +1,10 @@
-{%- from "rsyslog/map.jinja" import common with context %}
+{%- from "rsyslog/map.jinja" import client,server with context %}
+
+{%- if server.enabled %}
 
 rsyslog_packages:
   pkg.latest:
-  - names: {{ common.pkgs }}
+  - names: {{ server.pkgs }}
 
 /etc/rsyslog/rsyslog.conf:
   file.managed:
@@ -21,3 +23,4 @@ rsyslog_service:
     - file: /etc/rsyslog/rsyslog.conf
 
 {%- endif %}
+
