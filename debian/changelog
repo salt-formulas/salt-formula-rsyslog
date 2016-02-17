@@ -1,5 +1,5 @@
 
-salt-formula-heat (0.1) trusty; urgency=medium
+salt-formula-rsyslog (0.1) trusty; urgency=medium
 
   * Initial release
 
