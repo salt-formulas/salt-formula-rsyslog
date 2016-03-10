@@ -8,7 +8,16 @@ In computing, syslog is a widely used standard for message logging. It permits s
 Sample pillars
 ==============
 
-Single rsyslog service
+Rsyslog service with default logging template
+
+.. code-block:: yaml
+
+    rsyslog:
+      client:
+        enabled: true
+
+
+Rsyslog service with precise timestamps, severity, facility.
 
 .. code-block:: yaml
 
@@ -17,7 +26,8 @@ Single rsyslog service
         enabled: true
         format:
           name: TraditionalFormatWithPRI
-          template: '"%pri-text%: %timegenerated% %HOSTNAME% %syslogtag%%msg:::drop-last-lf%\n"'
+          template: '"%syslogpriority% %syslogfacility% %timestamp:::date-rfc3339% %HOSTNAME% %syslogtag%%msg:::sp-if-no-1st-sp%%msg:::drop-last-lf%\n"'
+
 
 Read more
 =========
