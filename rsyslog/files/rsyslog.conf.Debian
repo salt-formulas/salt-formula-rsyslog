@@ -37,7 +37,7 @@ $KLogPermitNonKernelFacility on
 {% if client.format is defined %}
 $ActionFileDefaultTemplate {{ client.format.name }},{{ client.format.template }}
 {% else %}
-ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
+$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
 {% endif %}
 
 # Filter duplicated messages
@@ -46,9 +46,22 @@ $RepeatedMsgReduction on
 #
 # Set the default permissions for all log files.
 #
+{% if client.file.owner is defined %}
+$FileOwner {{ client.file.owner }}
+{% else %}
 $FileOwner syslog
+{% endif %}
+{% if client.file.group is defined %}
+$FileGroup {{ client.file.group }}
+{% else %}
 $FileGroup adm
-$FileCreateMode 0640
+{% endif %}
+{% if client.file.createmode is defined %}
+$FileCreateMode {{ client.file.createmode }}
+{% else %}
+$FileCreateMode 640
+{% endif %}
+
 $DirCreateMode 0755
 $Umask 0022
 $PrivDropToUser syslog
