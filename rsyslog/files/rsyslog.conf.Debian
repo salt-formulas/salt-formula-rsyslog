@@ -48,18 +48,12 @@ $RepeatedMsgReduction on
 #
 {% if client.file.owner is defined %}
 $FileOwner {{ client.file.owner }}
-{% else %}
-$FileOwner syslog
 {% endif %}
 {% if client.file.group is defined %}
 $FileGroup {{ client.file.group }}
-{% else %}
-$FileGroup adm
 {% endif %}
 {% if client.file.createmode is defined %}
 $FileCreateMode {{ client.file.createmode }}
-{% else %}
-$FileCreateMode 640
 {% endif %}
 
 $DirCreateMode 0755

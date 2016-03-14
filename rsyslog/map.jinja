@@ -11,6 +11,10 @@ RedHat:
   service:
   - rsyslogd
   configfile: /etc/rsyslog.conf
+  file:
+    owner: root
+    group: root
+    createmode: 640
 {%- endload %}
 {%- set server = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:server')) %}
 {%- set client = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:client')) %}
