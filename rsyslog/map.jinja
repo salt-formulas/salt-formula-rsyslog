@@ -4,11 +4,13 @@ Debian:
   - rsyslog
   service:
   - rsyslogd
+  configfile: /etc/rsyslog/rsyslog.conf
 RedHat:
   pkgs:
   - rsyslog
   service:
   - rsyslogd
+  configfile: /etc/rsyslog.conf
 {%- endload %}
 {%- set server = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:server')) %}
 {%- set client = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:client')) %}

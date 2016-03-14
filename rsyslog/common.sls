@@ -6,12 +6,11 @@ rsyslog_packages:
   pkg.latest:
   - names: {{ server.pkgs }}
 
-/etc/rsyslog/rsyslog.conf:
+{{ server.configfile }}:
   file.managed:
-  - source: salt://rsyslog/files/rsyslog.conf
+  - source: salt://rsyslog/files/rsyslog.conf.{{ grains.os_family }}
   - template: jinja
   - mode: 640
-  - group: rsyslog
   - require:
     - pkg: rsyslog_packages
 
@@ -20,7 +19,7 @@ rsyslog_service:
   - enable: true
   - name: rsyslog
   - watch:
-    - file: /etc/rsyslog/rsyslog.conf
+    - file: {{ server.configfile }}
 
 {%- endif %}
 
