@@ -7,5 +7,6 @@
         file:
           owner: root
           group: root
-          createmode: 640
+          createmode: 0640
+          umask: 0022
 
