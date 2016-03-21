@@ -16,7 +16,7 @@ Debian:
   - /var/log/kern.log
   - /var/log/mail.log
   - /var/log/mail.err
-edHat:
+RedHat:
   pkgs:
   - rsyslog
   service:
@@ -34,6 +34,6 @@ edHat:
   - /var/log/cron
   - /var/log/spooler
   - /var/log/boot.log
-%- endload %}
+{%- endload %}
 {%- set server = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:server')) %}
 {%- set client = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:client')) %}
