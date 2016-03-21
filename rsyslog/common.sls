@@ -21,10 +21,10 @@ rsyslog_service:
   - watch:
     - file: {{ server.configfile }}
 
-{% for logfile in server.logfiles.iteritems() %}
+{% for logfile in server.logfiles %}
 {{ logfile }}:
   file.managed:
-  - mode: {{ server.createmode }}
+  - mode: {{ server.file.createmode }}
   - watch:
     - file: {{ server.configfile }}
 {% endfor %}
