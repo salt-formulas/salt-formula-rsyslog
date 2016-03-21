@@ -11,13 +11,12 @@ Debian:
     createmode: 0640
     umask: 0022
   logfiles:
-    - /var/log/messages
-    - /var/log/secure
-    - /var/log/maillog
-    - /var/log/cron
-    - /var/log/spooler
-    - /var/log/boot.log
-RedHat:
+  - /var/log/auth.log
+  - /var/log/syslog
+  - /var/log/kern.log
+  - /var/log/mail.log
+  - /var/log/mail.err
+edHat:
   pkgs:
   - rsyslog
   service:
@@ -29,14 +28,12 @@ RedHat:
     createmode: 0640
     umask: 0000
   logfiles:
-    - /var/log/auth.log
-    - /var/log/syslog
-    - /var/log/kern.log
-    - /var/log/mail.log
-    - /var/log/mail.err
-    - /var/log/news/news.crit
-    - /var/log/news/news.err
-    - /var/log/news/news.notice
-{%- endload %}
+  - /var/log/messages
+  - /var/log/secure
+  - /var/log/maillog
+  - /var/log/cron
+  - /var/log/spooler
+  - /var/log/boot.log
+%- endload %}
 {%- set server = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:server')) %}
 {%- set client = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:client')) %}
