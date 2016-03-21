@@ -10,7 +10,7 @@ rsyslog_packages:
   file.managed:
   - source: salt://rsyslog/files/rsyslog.conf.{{ grains.os_family }}
   - template: jinja
-  - mode: 640
+  - mode: 0640
   - require:
     - pkg: rsyslog_packages
 
@@ -20,6 +20,14 @@ rsyslog_service:
   - name: rsyslog
   - watch:
     - file: {{ server.configfile }}
+
+{% for logfile in server.logfiles.iteritems() %}
+{{ logfile }}:
+  file.managed:
+  - mode: {{ server.createmode }}
+  - watch:
+    - file: {{ server.configfile }}
+{% endfor %}
 
 {%- endif %}
 
