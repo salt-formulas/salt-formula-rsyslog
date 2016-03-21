@@ -29,8 +29,11 @@ $WorkDirectory /var/lib/rsyslog
 # Use default timestamp format
 # $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
 {% if client.format is defined %}
-$ActionFileDefaultTemplate {{ client.format.name }},{{ client.format.template }}
+$template {{ client.format.name }},{{ client.format.template }}
+$ActionFileDefaultTemplate {{ client.format.name }}
+
 {% else %}
+$template RSYSLOG_TraditionalFileFormat
 $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
 {% endif %}
 
@@ -48,6 +51,18 @@ $OmitLocalLogging on
 # File to store the position in the journal
 $IMJournalStateFile imjournal.state
 
+{% if client.file.umask is defined %}
+$Umask {{ client.file.umask }}
+{% endif %}
+{% if client.file.owner is defined %}
+$FileOwner {{ client.file.owner }}
+{% endif %}
+{% if client.file.group is defined %}
+$FileGroup {{ client.file.group }}
+{% endif %}
+{% if client.file.createmode is defined %}
+$FileCreateMode {{ client.file.createmode }}
+{% endif %}
 
 #### RULES ####
 
@@ -96,13 +111,3 @@ local7.*                                                /var/log/boot.log
 #*.* @@remote-host:514
 # ### end of the forwarding rule ###
 #
-{% if client.file.owner is defined %}
-$FileOwner {{ client.file.owner }}
-{% endif %}
-{% if client.file.group is defined %}
-$FileGroup {{ client.file.group }}
-{% endif %}
-{% if client.file.createmode is defined %}
-$FileCreateMode {{ client.file.createmode }}
-{% endif %}
-
