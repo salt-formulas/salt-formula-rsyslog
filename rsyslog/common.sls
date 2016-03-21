@@ -27,6 +27,8 @@ rsyslog_service:
   - mode: {{ server.file.createmode }}
   - watch:
     - file: {{ server.configfile }}
+  - watch_in:
+    - service: rsyslog_service
 {% endfor %}
 
 {%- endif %}
