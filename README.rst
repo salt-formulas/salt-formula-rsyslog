@@ -30,7 +30,8 @@ Rsyslog service with precise timestamps, severity, facility.
         file:
           owner: root
           group: root
-          createmode: 640
+          createmode: 0640
+          umask: 0022
 
 
 Read more
