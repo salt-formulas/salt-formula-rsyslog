@@ -5,6 +5,18 @@ Debian:
   service:
   - rsyslogd
   configfile: /etc/rsyslog.conf
+  file:
+    owner: syslog
+    group: adm
+    createmode: 0640
+    umask: 0022
+  logfiles:
+    - /var/log/messages
+    - /var/log/secure
+    - /var/log/maillog
+    - /var/log/cron
+    - /var/log/spooler
+    - /var/log/boot.log
 RedHat:
   pkgs:
   - rsyslog
@@ -14,7 +26,17 @@ RedHat:
   file:
     owner: root
     group: root
-    createmode: 640
+    createmode: 0640
+    umask: 0000
+  logfiles:
+    - /var/log/auth.log
+    - /var/log/syslog
+    - /var/log/kern.log
+    - /var/log/mail.log
+    - /var/log/mail.err
+    - /var/log/news/news.crit
+    - /var/log/news/news.err
+    - /var/log/news/news.notice
 {%- endload %}
 {%- set server = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:server')) %}
 {%- set client = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:client')) %}
