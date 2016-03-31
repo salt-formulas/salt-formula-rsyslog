@@ -4,29 +4,67 @@ Debian:
   - rsyslog
   service:
   - rsyslogd
-  configfile: /etc/rsyslog.conf
-  file:
-    owner: syslog
-    group: adm
-    createmode: 0640
-    umask: 0022
-  logfiles:
-  - /var/log/auth.log
-  - /var/log/syslog
-  - /var/log/kern.log
-  - /var/log/mail.log
-  - /var/log/mail.err
+  output:
+    file:
+      /var/log/syslog:
+        sync: false
+        filter: "*.*;auth,authpriv.none"
+        owner: syslog
+        group: adm
+        createmode: "0640"
+        umask: "0022"
+        enable: true
+      /var/log/auth:
+        sync: true
+        filter: "auth,authpriv.*"
+        owner: syslog
+        group: adm
+        createmode: "0640"
+        umask: "0022"
+        enable: true
+      /var/log/kern:
+        sync: false
+        filter: "kern.*"
+        owner: syslog
+        group: adm
+        createmode: "0640"
+        umask: "0022"
+        enable: true
+      /var/log/mail.log:
+        sync: false
+        filter: "mail.*"
+        owner: syslog
+        group: adm
+        createmode: "0640"
+        umask: "0022"
+        enable: true
+      /var/log/mail.err:
+        action: /var/log/mail.err
+        filter: mail.err
+        owner: syslog
+        group: adm
+        createmode: "0640"
+        umask: "0022"
+        enable: true
+    console:
+      wall:
+        action: ":omusrmsg:*"
+        filter: "*.emerg"
+        enable: true
+      xconsole:
+        action: "|/dev/xconsole"
+        filter: "daemon.*;mail.*; news.err; *.=debug;*.=info;*.=notice;*.=warn"
+        enable: true
 RedHat:
   pkgs:
   - rsyslog
   service:
   - rsyslogd
-  configfile: /etc/rsyslog.conf
   file:
     owner: root
     group: root
-    createmode: 0640
-    umask: 0000
+    createmode: "0640"
+    umask: "0000"
   logfiles:
   - /var/log/messages
   - /var/log/secure

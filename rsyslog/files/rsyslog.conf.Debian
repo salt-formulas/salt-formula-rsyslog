@@ -48,18 +48,13 @@ $RepeatedMsgReduction on
 #
 # Set the default permissions for all log files.
 #
-{% if client.file.owner is defined %}
-$FileOwner {{ client.file.owner }}
-{% endif %}
-{% if client.file.group is defined %}
-$FileGroup {{ client.file.group }}
-{% endif %}
-{% if client.file.createmode is defined %}
-$FileCreateMode {{ client.file.createmode }}
-{% endif %}
-{% if client.file.umask is defined %}
-$Umask {{ client.file.umask }}
-{% endif %}
+{% for name, values in client.logfiles.iteritems() %}
+{{ values['filter'] }}     {{ name }}
+$FileOwner: {{ values['owner'] }}
+$FileGroup: {{ values['group'] }}
+$FileCreateMode: "{{ values['createmode'] }}"
+$Umask: "{{ values['umask'] }}"
+{% endfor %}
 
 $DirCreateMode 0755
 $PrivDropToUser syslog

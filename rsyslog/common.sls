@@ -6,7 +6,7 @@ rsyslog_packages:
   pkg.latest:
   - names: {{ server.pkgs }}
 
-{{ server.configfile }}:
+/etc/rsyslog.conf:
   file.managed:
   - source: salt://rsyslog/files/rsyslog.conf.{{ grains.os_family }}
   - template: jinja
@@ -14,22 +14,29 @@ rsyslog_packages:
   - require:
     - pkg: rsyslog_packages
 
+/etc/rsyslog.d/10-default.conf:
+  file.managed:
+  - source: salt://rsyslog/files/10-default.conf
+  - template: jinja
+  - mode: 0640
+  - require:
+    - file: /etc/rsyslog.conf
+
 rsyslog_service:
   service.running:
   - enable: true
   - name: rsyslog
   - watch:
-    - file: {{ server.configfile }}
+    - file: /etc/rsyslog.conf
 
-{% for logfile in server.logfiles %}
-{{ logfile }}:
+{% for output,type in server.output.file.iteritems() %}
+{{ output }}:
   file.managed:
-  - mode: {{ server.file.createmode }}
+  - mode: "{{ type['createmode'] }}"
   - watch:
-    - file: {{ server.configfile }}
+    - file: /etc/rsyslog.conf
   - watch_in:
     - service: rsyslog_service
 {% endfor %}
 
 {%- endif %}
-
