@@ -14,9 +14,9 @@ rsyslog_packages:
   - require:
     - pkg: rsyslog_packages
 
-/etc/rsyslog.d/10-default.conf:
+/etc/rsyslog.d/50-default.conf:
   file.managed:
-  - source: salt://rsyslog/files/10-default.conf
+  - source: salt://rsyslog/files/default.conf
   - template: jinja
   - mode: 0640
   - require:
@@ -33,6 +33,8 @@ rsyslog_service:
 {{ output }}:
   file.managed:
   - mode: "{{ type['createmode'] }}"
+  - owner: {{ type['owner'] }}
+  - group: {{ type['group'] }}
   - watch:
     - file: /etc/rsyslog.conf
   - watch_in:

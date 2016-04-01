@@ -45,17 +45,6 @@ $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
 # Filter duplicated messages
 $RepeatedMsgReduction on
 
-#
-# Set the default permissions for all log files.
-#
-{% for name, values in client.logfiles.iteritems() %}
-{{ values['filter'] }}     {{ name }}
-$FileOwner: {{ values['owner'] }}
-$FileGroup: {{ values['group'] }}
-$FileCreateMode: "{{ values['createmode'] }}"
-$Umask: "{{ values['umask'] }}"
-{% endfor %}
-
 $DirCreateMode 0755
 $PrivDropToUser syslog
 $PrivDropToGroup syslog
