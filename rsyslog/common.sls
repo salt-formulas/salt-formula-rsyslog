@@ -1,18 +1,27 @@
-{%- from "rsyslog/map.jinja" import client,server with context %}
+{%- from "rsyslog/map.jinja" import client,server,common with context %}
 
-{%- if server.enabled %}
+{%- if common.enabled %}
 
 rsyslog_packages:
   pkg.latest:
-  - names: {{ server.pkgs }}
+  - names: {{ common.pkgs }}
 
 /etc/rsyslog.conf:
   file.managed:
-  - source: salt://rsyslog/files/rsyslog.conf.{{ grains.os_family }}
+  - source: salt://rsyslog/files/rsyslog.default.conf
   - template: jinja
   - mode: 0640
   - require:
     - pkg: rsyslog_packages
+
+/etc/rsyslog.d:
+  file.directory:
+  - mode: 0755
+  - require:
+    - pkg: rsyslog_packages
+  {% if common.purge_rsyslog_d is defined and common.purge_rsyslog_d == true %}
+  - clean: true
+  {% endif %}
 
 /etc/rsyslog.d/50-default.conf:
   file.managed:
@@ -29,7 +38,8 @@ rsyslog_service:
   - watch:
     - file: /etc/rsyslog.conf
 
-{% for output,type in server.output.file.iteritems() %}
+{% if common.manage_file_perms is defined and common.manage_file_perms == true %}
+{% for output,type in common.output.file.iteritems() %}
 {{ output }}:
   file.managed:
   - mode: "{{ type['createmode'] }}"
@@ -40,5 +50,6 @@ rsyslog_service:
   - watch_in:
     - service: rsyslog_service
 {% endfor %}
+{% endif %}
 
 {%- endif %}

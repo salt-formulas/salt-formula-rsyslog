@@ -4,7 +4,20 @@ Debian:
   - rsyslog
   service:
   - rsyslogd
-  workdirectory: /var/spool/rsyslog
+  spool_dir: /var/spool/rsyslog
+  omit_local_logging: false
+  preserve_fqdn: true
+  non_kernel_facility: true
+  msg_reduction: true
+  purge_rsyslog_d: true
+  manage_file_perms: true
+  perm_dir: "0755"
+  run_user: syslog
+  run_group: syslog
+  rsyslog_d: /etc/rsyslog.d
+  modules:
+  - imuxsock
+  - imklog
   output:
     file:
       /var/log/syslog:
@@ -67,7 +80,16 @@ RedHat:
   - rsyslog
   service:
   - rsyslogd
-  workdirectory: /var/lib/rsyslog
+  spool_dir: /var/lib/rsyslog
+  omit_local_logging: true
+  preserve_fqdn: false
+  non_kernel_facility: false
+  msg_reduction: false
+  manage_file_perms: true
+  rsyslog_d: /etc/rsyslog.d
+  modules:
+  - imjournal
+  - imuxsock
   output:
     file:
       /var/log/messages:
