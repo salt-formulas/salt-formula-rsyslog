@@ -138,4 +138,4 @@ RedHat:
         createmode: "0600"
         enable: true
 {%- endload %}
-{%- set common = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:common')) %}
+{%- set global = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:global')) %}
