@@ -1,4 +1,4 @@
-{%- from "rsyslog/map.jinja" import client,server,common with context %}
+{%- from "rsyslog/map.jinja" import common with context %}
 
 {%- if common.enabled %}
 
