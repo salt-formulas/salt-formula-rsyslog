@@ -1,10 +1,10 @@
-{%- from "rsyslog/map.jinja" import common with context %}
+{%- from "rsyslog/map.jinja" import global with context %}
 
-{%- if common.enabled %}
+{%- if global.enabled %}
 
 rsyslog_packages:
   pkg.latest:
-  - names: {{ common.pkgs }}
+  - names: {{ global.pkgs }}
 
 /etc/rsyslog.conf:
   file.managed:
@@ -19,7 +19,7 @@ rsyslog_packages:
   - mode: 0755
   - require:
     - pkg: rsyslog_packages
-  {% if common.purge_rsyslog_d is defined and common.purge_rsyslog_d == true %}
+  {% if global.purge_rsyslog_d is defined and global.purge_rsyslog_d == true %}
   - clean: true
   {% endif %}
 
@@ -30,8 +30,8 @@ rsyslog_service:
   - watch:
     - file: /etc/rsyslog.conf
 
-{% if common.manage_file_perms is defined and common.manage_file_perms == true %}
-{% for output,type in common.output.file.iteritems() %}
+{% if global.manage_file_perms is defined and global.manage_file_perms == true %}
+{% for output,type in global.output.file.iteritems() %}
 {{ output }}:
   file.managed:
   - mode: "{{ type['createmode'] }}"
