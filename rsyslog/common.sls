@@ -23,16 +23,6 @@ rsyslog_packages:
   - clean: true
   {% endif %}
 
-{#
-/etc/rsyslog.d/50-default.conf:
-  file.managed:
-  - source: salt://rsyslog/files/default.conf
-  - template: jinja
-  - mode: 0640
-  - require:
-    - file: /etc/rsyslog.conf
-#}
-
 rsyslog_service:
   service.running:
   - enable: true
