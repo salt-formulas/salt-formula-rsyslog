@@ -4,6 +4,7 @@ Debian:
   - rsyslog
   service:
   - rsyslogd
+  enabled: true
   spool_dir: /var/spool/rsyslog
   omit_local_logging: false
   preserve_fqdn: true
@@ -80,6 +81,7 @@ RedHat:
   - rsyslog
   service:
   - rsyslogd
+  enabled: true
   spool_dir: /var/lib/rsyslog
   omit_local_logging: true
   preserve_fqdn: false
