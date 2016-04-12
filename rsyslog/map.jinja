@@ -69,7 +69,10 @@ Debian:
         enable: true
       xconsole:
         action: "|/dev/xconsole"
-        filter: "daemon.*;mail.*; news.err; *.=debug;*.=info;*.=notice;*.=warn"
+        filter: "daemon.*;mail.*;\
+          news.err;\
+          *.=debug;*.=info;\
+          *.=notice;*.=warn"
         enable: true
     remote:
       somehost.domain:
