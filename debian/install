@@ -1,2 +1,0 @@
-rsyslog/*             /usr/share/salt-formulas/env/rsyslog/
-metadata/service/*      /usr/share/salt-formulas/reclass/service/rsyslog/
