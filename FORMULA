@@ -1,0 +1,8 @@
+name: rsyslog
+os: Debian, RedHat
+os_family: Debian, RedHat
+version: 201606
+release: 1
+summary: rsyslog salt formula
+description: Install and configure rsyslog system.
+top_level_dir: rsyslog
