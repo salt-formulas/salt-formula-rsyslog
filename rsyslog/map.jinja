@@ -4,36 +4,141 @@ Debian:
   - rsyslog
   service:
   - rsyslogd
-  configfile: /etc/rsyslog.conf
-  file:
-    owner: syslog
-    group: adm
-    createmode: 0640
-    umask: 0022
-  logfiles:
-  - /var/log/auth.log
-  - /var/log/syslog
-  - /var/log/kern.log
-  - /var/log/mail.log
-  - /var/log/mail.err
+  enabled: true
+  spool_dir: /var/spool/rsyslog
+  omit_local_logging: false
+  preserve_fqdn: false
+  non_kernel_facility: true
+  msg_reduction: true
+  purge_rsyslog_d: true
+  manage_file_perms: true
+  perm_dir: "0755"
+  run_user: syslog
+  run_group: syslog
+  rsyslog_d: /etc/rsyslog.d
+  modules:
+  - imuxsock
+  - imklog
+  output:
+    file:
+      /var/log/syslog:
+        sync: false
+        filter: "*.*;auth,authpriv.none"
+        owner: syslog
+        group: adm
+        createmode: "0640"
+        umask: "0022"
+        enable: true
+      /var/log/auth:
+        sync: true
+        filter: "auth,authpriv.*"
+        owner: syslog
+        group: adm
+        createmode: "0640"
+        umask: "0022"
+        enable: true
+      /var/log/kern:
+        sync: false
+        filter: "kern.*"
+        owner: syslog
+        group: adm
+        createmode: "0640"
+        umask: "0022"
+        enable: true
+      /var/log/mail.log:
+        sync: false
+        filter: "mail.*"
+        owner: syslog
+        group: adm
+        createmode: "0640"
+        umask: "0022"
+        enable: true
+      /var/log/mail.err:
+        sync: false
+        action: /var/log/mail.err
+        filter: mail.err
+        owner: syslog
+        group: adm
+        createmode: "0640"
+        umask: "0022"
+        enable: true
+    console:
+      wall:
+        action: ":omusrmsg:*"
+        filter: "*.emerg"
+        enable: true
+      xconsole:
+        action: "|/dev/xconsole"
+        filter: "daemon.*;mail.*;news.err;*.=debug;*.=info;*.=notice;*.=warn"
+        enable: true
+    remote:
+      somehost.domain:
+        action: "@@remote-host:514"
+        filter: "*.*"
+        enable: false
 RedHat:
   pkgs:
   - rsyslog
   service:
   - rsyslogd
-  configfile: /etc/rsyslog.conf
-  file:
-    owner: root
-    group: root
-    createmode: 0640
-    umask: 0000
-  logfiles:
-  - /var/log/messages
-  - /var/log/secure
-  - /var/log/maillog
-  - /var/log/cron
-  - /var/log/spooler
-  - /var/log/boot.log
+  enabled: true
+  spool_dir: /var/lib/rsyslog
+  omit_local_logging: true
+  preserve_fqdn: false
+  non_kernel_facility: false
+  msg_reduction: false
+  manage_file_perms: true
+  perm_dir: "0755"
+  run_user: root
+  run_group: root
+  rsyslog_d: /etc/rsyslog.d
+  modules:
+  - imjournal
+  - imuxsock
+  output:
+    file:
+      /var/log/messages:
+        sync: true
+        filter: "*.info;mail.none;authpriv.none;cron.none"
+        owner: root
+        group: root
+        createmode: "0600"
+        umask: "0000"
+        enable: true
+      /var/log/secure:
+        sync: true
+        filter: "authpriv.*"
+        owner: root
+        group: root
+        createmode: "0600"
+        enable: true
+      /var/log/maillog:
+        sync: true
+        filter: "mail.*"
+        owner: root
+        group: root
+        createmode: "0600"
+        enable: true
+      /var/log/cron:
+        sync: true
+        filter: "cron.*"
+        owner: root
+        group: root
+        createmode: "0600"
+        enable: true
+      /var/log/spooler:
+        sync: true
+        filter: "uucp,news.crit"
+        owner: root
+        group: root
+        createmode: "0600"
+        enable: true
+      /var/log/boot.log:
+        sync: false
+        filter: "local7.*"
+        owner: root
+        group: root
+        createmode: "0600"
+        enable: true
 {%- endload %}
-{%- set server = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:server')) %}
-{%- set client = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:client')) %}
+{%- set global = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:client')) %}

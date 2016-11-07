@@ -1,35 +1,47 @@
-{%- from "rsyslog/map.jinja" import client,server with context %}
+{%- from "rsyslog/map.jinja" import global with context %}
 
-{%- if server.enabled %}
+{%- if global.enabled %}
 
 rsyslog_packages:
   pkg.latest:
-  - names: {{ server.pkgs }}
+  - names: {{ global.pkgs }}
 
-{{ server.configfile }}:
+/etc/rsyslog.conf:
   file.managed:
-  - source: salt://rsyslog/files/rsyslog.conf.{{ grains.os_family }}
+  - source: salt://rsyslog/files/rsyslog.default.conf
   - template: jinja
   - mode: 0640
   - require:
     - pkg: rsyslog_packages
+
+/etc/rsyslog.d:
+  file.directory:
+  - mode: 0755
+  - require:
+    - pkg: rsyslog_packages
+  {% if global.purge_rsyslog_d is defined and global.purge_rsyslog_d == true %}
+  - clean: true
+  {% endif %}
 
 rsyslog_service:
   service.running:
   - enable: true
   - name: rsyslog
   - watch:
-    - file: {{ server.configfile }}
+    - file: /etc/rsyslog.conf
 
-{% for logfile in server.logfiles %}
-{{ logfile }}:
+{% if global.manage_file_perms is defined and global.manage_file_perms == true %}
+{% for output,type in global.output.file.iteritems() %}
+{{ output }}:
   file.managed:
-  - mode: {{ server.file.createmode }}
+  - mode: "{{ type['createmode'] }}"
+  - owner: {{ type['owner'] }}
+  - group: {{ type['group'] }}
   - watch:
-    - file: {{ server.configfile }}
+    - file: /etc/rsyslog.conf
   - watch_in:
     - service: rsyslog_service
 {% endfor %}
+{% endif %}
 
 {%- endif %}
-
