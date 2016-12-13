@@ -1,5 +1,7 @@
 applications:
 - rsyslog
+classes:
+- service.rsyslog.support
 parameters:
   rsyslog:
     client:

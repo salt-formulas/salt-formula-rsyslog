@@ -1,0 +1,13 @@
+parameters:
+  rsyslog:
+    _support:
+      collectd:
+        enabled: false
+      heka:
+        enabled: true
+      sensu:
+        enabled: false
+      sphinx:
+        enabled: false
+      grafana:
+        enabled: false
