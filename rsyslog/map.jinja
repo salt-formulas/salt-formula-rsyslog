@@ -28,7 +28,7 @@ Debian:
         group: adm
         createmode: "0640"
         umask: "0022"
-        enable: true
+        enabled: true
       /var/log/auth:
         sync: true
         filter: "auth,authpriv.*"
@@ -36,7 +36,7 @@ Debian:
         group: adm
         createmode: "0640"
         umask: "0022"
-        enable: true
+        enabled: true
       /var/log/kern:
         sync: false
         filter: "kern.*"
@@ -44,7 +44,7 @@ Debian:
         group: adm
         createmode: "0640"
         umask: "0022"
-        enable: true
+        enabled: true
       /var/log/mail.log:
         sync: false
         filter: "mail.*"
@@ -52,7 +52,7 @@ Debian:
         group: adm
         createmode: "0640"
         umask: "0022"
-        enable: true
+        enabled: true
       /var/log/mail.err:
         sync: false
         action: /var/log/mail.err
@@ -61,21 +61,21 @@ Debian:
         group: adm
         createmode: "0640"
         umask: "0022"
-        enable: true
+        enabled: true
     console:
       wall:
         action: ":omusrmsg:*"
         filter: "*.emerg"
-        enable: true
+        enabled: true
       xconsole:
         action: "|/dev/xconsole"
         filter: "daemon.*;mail.*;news.err;*.=debug;*.=info;*.=notice;*.=warn"
-        enable: true
+        enabled: true
     remote:
       somehost.domain:
         action: "@@remote-host:514"
         filter: "*.*"
-        enable: false
+        enabled: false
 RedHat:
   pkgs:
   - rsyslog
@@ -104,41 +104,41 @@ RedHat:
         group: root
         createmode: "0600"
         umask: "0000"
-        enable: true
+        enabled: true
       /var/log/secure:
         sync: true
         filter: "authpriv.*"
         owner: root
         group: root
         createmode: "0600"
-        enable: true
+        enabled: true
       /var/log/maillog:
         sync: true
         filter: "mail.*"
         owner: root
         group: root
         createmode: "0600"
-        enable: true
+        enabled: true
       /var/log/cron:
         sync: true
         filter: "cron.*"
         owner: root
         group: root
         createmode: "0600"
-        enable: true
+        enabled: true
       /var/log/spooler:
         sync: true
         filter: "uucp,news.crit"
         owner: root
         group: root
         createmode: "0600"
-        enable: true
+        enabled: true
       /var/log/boot.log:
         sync: false
         filter: "local7.*"
         owner: root
         group: root
         createmode: "0600"
-        enable: true
+        enabled: true
 {%- endload %}
 {%- set global = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:client')) %}
