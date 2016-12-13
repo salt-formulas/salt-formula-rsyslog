@@ -13,9 +13,9 @@ log_collector:
         {%- else %}
         syslog_pattern: '%TIMESTAMP% %HOSTNAME% %syslogtag%%msg:::sp-if-no-1st-sp%%msg%\n'
         {%- endif %}
-  {%- set file_match = salt['rsyslog_util.syslog_file_match'](global.output) %}
-  {%- if file_match|length > 0 %}
   input:
+    {%- set file_match = salt['rsyslog_util.syslog_file_match'](global.output) %}
+    {%- if file_match|length > 0 %}
     {%- for logdir, pattern in file_match.iteritems() %}
     syslog{{ logdir.replace('/', '_') }}:
       engine: logstreamer
@@ -25,7 +25,14 @@ log_collector:
       decoder: "syslog_decoder"
       splitter: "TokenSplitter"
     {%- endfor %}
-  {%- endif %}
+    {%- endif %}
+    syslog_haproxy:
+      engine: logstreamer
+      log_directory: "/var/log"
+      file_match: 'haproxy\.log'
+      differentiator: [ 'system.', 'haproxy' ]
+      decoder: "syslog_decoder"
+      splitter: "TokenSplitter"
   filter:
     hdd_errors:
       engine: sandbox
