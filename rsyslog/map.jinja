@@ -32,7 +32,7 @@ Debian:
         createmode: "0640"
         umask: "0022"
         enabled: true
-      /var/log/auth:
+      /var/log/auth.log:
         sync: true
         filter: "auth,authpriv.*"
         owner: syslog
@@ -40,7 +40,7 @@ Debian:
         createmode: "0640"
         umask: "0022"
         enabled: true
-      /var/log/kern:
+      /var/log/kern.log:
         sync: false
         filter: "kern.*"
         owner: syslog
