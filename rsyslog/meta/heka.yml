@@ -1,0 +1,47 @@
+{%- from "rsyslog/map.jinja" import global with context %}
+log_collector:
+  decoder:
+    syslog:
+      engine: sandbox
+      module_file: /usr/share/lma_collector/decoders/generic_syslog.lua
+      module_dir: /usr/share/lma_collector/common;/usr/share/heka/lua_modules
+      adjust_timezone: true
+      config:
+        {%- if global.format is defined %}
+        syslog_pattern: '{{ global.format.template }}'
+        fallback_syslog_pattern: '%TIMESTAMP% %HOSTNAME% %syslogtag%%msg:::sp-if-no-1st-sp%%msg%\n'
+        {%- else %}
+        syslog_pattern: '%TIMESTAMP% %HOSTNAME% %syslogtag%%msg:::sp-if-no-1st-sp%%msg%\n'
+        {%- endif %}
+  input:
+    {%- set file_match = salt['rsyslog_util.syslog_file_match'](global.output) %}
+    {%- if file_match|length > 0 %}
+    {%- for logdir, pattern in file_match.iteritems() %}
+    syslog{{ logdir.replace('/', '_') }}:
+      engine: logstreamer
+      log_directory: "{{ logdir }}"
+      file_match: '(?P<Service>{{ pattern }})'
+      differentiator: [ 'system.', 'Service' ]
+      decoder: "syslog_decoder"
+      splitter: "TokenSplitter"
+    {%- endfor %}
+    {%- endif %}
+    syslog_haproxy:
+      engine: logstreamer
+      log_directory: "/var/log"
+      file_match: 'haproxy\.log'
+      differentiator: [ 'system.', 'haproxy' ]
+      decoder: "syslog_decoder"
+      splitter: "TokenSplitter"
+  filter:
+    hdd_errors:
+      engine: sandbox
+      module_file: /usr/share/lma_collector/filters/hdd_errors_counter.lua
+      module_dir: /usr/share/lma_collector/common;/usr/share/heka/lua_modules
+      preserve_data: false
+      message_matcher: "Type == 'log' && Logger == 'system.kern'"
+      ticker_interval: 10
+      config:
+        grace_interval: 10
+        patterns: "/error%s.+([sv]d[a-z][a-z]?)%d?/ /([sv]d[a-z][a-z]?)%d?.+%serror/"
+        hostname: '{{ grains.host }}'

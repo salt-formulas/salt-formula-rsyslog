@@ -14,14 +14,10 @@ rsyslog_packages:
   - require:
     - pkg: rsyslog_packages
 
-/etc/rsyslog.d:
-  file.directory:
-  - mode: 0755
+/etc/rsyslog.d/50-default.conf:
+  file.absent:
   - require:
-    - pkg: rsyslog_packages
-  {% if global.purge_rsyslog_d is defined and global.purge_rsyslog_d == true %}
-  - clean: true
-  {% endif %}
+    - pkgs: rsyslog_packages
 
 rsyslog_service:
   service.running:
