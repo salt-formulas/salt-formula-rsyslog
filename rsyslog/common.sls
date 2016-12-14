@@ -17,7 +17,7 @@ rsyslog_packages:
 /etc/rsyslog.d/50-default.conf:
   file.absent:
   - require:
-    - pkgs: rsyslog_packages
+    - pkg: rsyslog_packages
 
 rsyslog_service:
   service.running:
