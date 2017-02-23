@@ -43,3 +43,20 @@ log_collector:
       config:
         hostname: '{{ grains.host }}'
         grace_interval: 30
+metric_collector:
+  trigger:
+    failed_logins_warning:
+      description: 'The rate of failed logins is too high.'
+      severity: warning
+      rules:
+      - metric: failed_logins_rate
+        relational_operator: '>='
+        threshold: 0.2
+        window: 120
+        periods: 0
+        function: avg
+  alarm:
+    failed_logins:
+      alerting: enabled
+      triggers:
+      - failed_logins_warning
