@@ -106,44 +106,49 @@ RedHat:
         sync: true
         filter: "*.info;mail.none;authpriv.none;cron.none"
         owner: root
-        group: root
-        createmode: "0600"
-        umask: "0000"
+        group: adm
+        createmode: "0640"
+        umask: "0022"
         enabled: true
       /var/log/secure:
         sync: true
         filter: "authpriv.*"
         owner: root
-        group: root
-        createmode: "0600"
+        group: adm
+        createmode: "0640"
+        umask: "0022"
         enabled: true
       /var/log/maillog:
         sync: true
         filter: "mail.*"
         owner: root
-        group: root
-        createmode: "0600"
+        group: adm
+        createmode: "0640"
+        umask: "0022"
         enabled: true
       /var/log/cron:
         sync: true
         filter: "cron.*"
         owner: root
-        group: root
-        createmode: "0600"
+        group: adm
+        createmode: "0640"
+        umask: "0022"
         enabled: true
       /var/log/spooler:
         sync: true
         filter: "uucp,news.crit"
         owner: root
-        group: root
-        createmode: "0600"
+        group: adm
+        createmode: "0640"
+        umask: "0022"
         enabled: true
       /var/log/boot.log:
         sync: false
         filter: "local7.*"
         owner: root
-        group: root
-        createmode: "0600"
+        group: adm
+        createmode: "0640"
+        umask: "0022"
         enabled: true
 {%- endload %}
 {%- set global = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:client')) %}
