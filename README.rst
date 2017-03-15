@@ -27,7 +27,7 @@ Rsyslog service with precise timestamps, severity, facility.
         format:
           name: TraditionalFormatWithPRI
           template: '"%syslogpriority% %syslogfacility% %timestamp:::date-rfc3339% %HOSTNAME% %syslogtag%%msg:::sp-if-no-1st-sp%%msg:::drop-last-lf%\n"'
-        logfiles:
+        output:
           file:
             -/var/log/syslog:
               filter: *.*;auth,authpriv.none
@@ -63,6 +63,13 @@ Rsyslog service with precise timestamps, severity, facility.
               filter: *.emerg
             "|/dev/xconsole":
               filter: "daemon.*;mail.*; news.err; *.=debug;*.=info;*.=notice;*.=warn":
+           -/var/log/your-app.log:
+              filter: "if $programname startswith 'your-app' then"
+              owner: syslog
+              group: adm
+              createmode: 0640
+              umask: 0022
+              stop_processing: true
 
 
 Read more
