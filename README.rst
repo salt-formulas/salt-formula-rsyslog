@@ -71,6 +71,21 @@ Rsyslog service with precise timestamps, severity, facility.
               umask: 0022
               stop_processing: true
 
+Support metadata
+================
+
+If the *heka* support metadata is enabled, all output files are automatically
+parsed by the **log_collector** service.
+To skip the log_collector configuration, set the **skip_log_collector** to true.
+
+.. code-block:: yaml
+
+    rsyslog:
+        output:
+          file:
+           /var/log/your-app.log:
+              filter: "if $programname startswith 'your-app' then"
+              skip_log_collector: true
 
 Read more
 =========

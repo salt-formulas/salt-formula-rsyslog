@@ -15,7 +15,7 @@ def syslog_file_match(output):
     """
     file_match = {}
     for name, config in output.get('file', {}).items():
-        if not config.get('enabled', False):
+        if not config.get('enabled') or config.get('skip_log_collector', False):
             continue
         logdir = os.path.dirname(name)
         pattern = os.path.basename(name).replace('.', '\.')
