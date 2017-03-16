@@ -71,6 +71,21 @@ Rsyslog service with precise timestamps, severity, facility.
               umask: 0022
               stop_processing: true
 
+Custom templates
+================
+
+It is possible to define a specific syslog template per output file instead of
+using the default one.
+
+.. code-block:: yaml
+
+    rsyslog:
+        output:
+          file:
+           /var/log/your-app.log:
+              template: ""%syslogtag:1:32%%msg:::sp-if-no-1st-sp%%msg%\\n""
+              filter: "if $programname startswith 'your-app' then"
+
 Support metadata
 ================
 
