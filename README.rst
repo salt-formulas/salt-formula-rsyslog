@@ -27,7 +27,7 @@ Rsyslog service with precise timestamps, severity, facility.
         format:
           name: TraditionalFormatWithPRI
           template: '"%syslogpriority% %syslogfacility% %timestamp:::date-rfc3339% %HOSTNAME% %syslogtag%%msg:::sp-if-no-1st-sp%%msg:::drop-last-lf%\n"'
-        logfiles:
+        output:
           file:
             -/var/log/syslog:
               filter: *.*;auth,authpriv.none
@@ -63,7 +63,44 @@ Rsyslog service with precise timestamps, severity, facility.
               filter: *.emerg
             "|/dev/xconsole":
               filter: "daemon.*;mail.*; news.err; *.=debug;*.=info;*.=notice;*.=warn":
+           -/var/log/your-app.log:
+              filter: "if $programname startswith 'your-app' then"
+              owner: syslog
+              group: adm
+              createmode: 0640
+              umask: 0022
+              stop_processing: true
 
+Custom templates
+================
+
+It is possible to define a specific syslog template per output file instead of
+using the default one.
+
+.. code-block:: yaml
+
+    rsyslog:
+        output:
+          file:
+           /var/log/your-app.log:
+              template: ""%syslogtag:1:32%%msg:::sp-if-no-1st-sp%%msg%\\n""
+              filter: "if $programname startswith 'your-app' then"
+
+Support metadata
+================
+
+If the *heka* support metadata is enabled, all output files are automatically
+parsed by the **log_collector** service.
+To skip the log_collector configuration, set the **skip_log_collector** to true.
+
+.. code-block:: yaml
+
+    rsyslog:
+        output:
+          file:
+           /var/log/your-app.log:
+              filter: "if $programname startswith 'your-app' then"
+              skip_log_collector: true
 
 Read more
 =========
