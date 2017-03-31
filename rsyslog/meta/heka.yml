@@ -14,6 +14,7 @@ log_collector:
         syslog_pattern: '%TIMESTAMP% %HOSTNAME% %syslogtag%%msg:::sp-if-no-1st-sp%%msg%\n'
         {%- endif %}
   input:
+    {%- if salt.get('rsyslog_util.syslog_file_match', None) %}
     {%- set file_match = salt['rsyslog_util.syslog_file_match'](global.output) %}
     {%- if file_match|length > 0 %}
     {%- for logdir, pattern in file_match.iteritems() %}
@@ -25,6 +26,7 @@ log_collector:
       decoder: "syslog_decoder"
       splitter: "TokenSplitter"
     {%- endfor %}
+    {%- endif %}
     {%- endif %}
     syslog_haproxy:
       engine: logstreamer
