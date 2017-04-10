@@ -152,3 +152,4 @@ RedHat:
         enabled: true
 {%- endload %}
 {%- set global = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:client')) %}
+{%- set server = salt['pillar.get']('rsyslog:server', {}) %}

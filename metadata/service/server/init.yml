@@ -1,0 +1,22 @@
+applications:
+- rsyslog
+classes:
+- service.rsyslog.support
+parameters:
+  rsyslog:
+    server:
+      enabled: true
+      modules:
+        - name: imtcp
+      template:
+        RemoteStorage:
+          parameter:
+            type: string
+            string: /var/log/%HOSTNAME%/%programname%.log
+      ruleset:
+        RemoteLogs:
+          description: action(type="omfile" dynaFile="RemoteStorage")
+      input:
+        imtcp:
+          port: 10514
+          ruleset: RemoteLogs
