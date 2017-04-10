@@ -6,8 +6,8 @@ parameters:
   rsyslog:
     server:
       enabled: true
-      modules:
-        - name: imtcp
+      module:
+        imtcp: {}
       template:
         RemoteStorage:
           parameter:
