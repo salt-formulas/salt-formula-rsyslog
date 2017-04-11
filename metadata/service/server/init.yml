@@ -3,6 +3,8 @@ applications:
 classes:
 - service.rsyslog.support
 parameters:
+  _param:
+    rsyslog_port: 10514
   rsyslog:
     server:
       enabled: true
@@ -18,5 +20,5 @@ parameters:
           description: action(type="omfile" dynaFile="RemoteStorage")
       input:
         imtcp:
-          port: 10514
+          port: ${_param:rsyslog_port}
           ruleset: RemoteLogs

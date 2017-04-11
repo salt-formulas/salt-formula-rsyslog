@@ -86,6 +86,34 @@ using the default one.
               template: ""%syslogtag:1:32%%msg:::sp-if-no-1st-sp%%msg%\\n""
               filter: "if $programname startswith 'your-app' then"
 
+Remote rsyslog server
+=====================
+
+It is possible to have rsyslog act as remote server, collecting, storing or forwarding logs.
+This functionality is provided via rsyslog input/output modules, rulesets and templates.
+
+.. code-block:: yaml
+
+    rsyslog:
+      server:
+        enabled: true
+        module:
+          imudp: {}
+        template:
+          RemoteFilePath:
+            parameter:
+              type: string
+              string: /var/log/%HOSTNAME%/%programname%.log
+        ruleset:
+          remote10514:
+            description: action(type="omfile" dynaFile="RemoteFilePath")
+        input:
+          imudp:
+            port: 10514
+            ruleset: remote10514
+          
+  
+
 Support metadata
 ================
 
