@@ -1,9 +1,10 @@
 {%- if pillar.rsyslog is defined %}
 include:
 {%- if pillar.rsyslog.server is defined %}
-- rsyslog.common
+- rsyslog.server
 {%- endif %}
 {%- if pillar.rsyslog.client is defined %}
-- rsyslog.common
+- rsyslog.client
 {%- endif %}
 {%- endif %}
+
