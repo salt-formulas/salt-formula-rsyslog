@@ -28,21 +28,11 @@ verifier:
   name: inspec
   sudo: true
 
-# platforms:
-#   - name: <%=ENV['PLATFORM'] || 'ubuntu-xenial'%>
-#     driver_config:
-#       image: <%=ENV['PLATFORM'] || 'trevorj/salty-whales:xenial'%>
-#       platform: ubuntu
 
 platforms:
-  - name: ubuntu-trusty
+  - name: <%=ENV['PLATFORM'] || 'ubuntu-xenial'%>
     driver_config:
-      image: trevorj/salty-whales:trusty
-      platform: ubuntu
-
-  - name: ubuntu-xenial
-    driver_config:
-      image: trevorj/salty-whales:xenial
+      image: <%=ENV['PLATFORM'] || 'trevorj/salty-whales:xenial'%>
       platform: ubuntu
 
 suites:
@@ -51,4 +41,9 @@ suites:
     provisioner:
       pillars-from-files:
         rsyslog.sls: tests/pillar/client_single.sls
+
+  - name: server_single
+    provisioner:
+      pillars-from-files:
+        rsyslog.sls: tests/pillar/server_single.sls
 # vim: ft=yaml sw=2 ts=2 sts=2 tw=125
