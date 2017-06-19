@@ -11,16 +11,12 @@ Debian:
   non_kernel_facility: true
   msg_reduction: true
   manage_file_perms: true
-  perm_dir: "0755"
-  run_user: syslog
-  run_group: syslog
   rsyslog_d: /etc/rsyslog.d
   modules:
   - imuxsock
   - imklog
   format:
     name: Rfc3164Log
-    template: '<%PRI%>%TIMESTAMP:::date-rfc3339% %HOSTNAME% %syslogtag:1:32%%msg:::sp-if-no-1st-sp%%msg%\n'
   output:
     file:
       /var/log/syslog:
@@ -79,6 +75,7 @@ Debian:
         filter: "*.*"
         enabled: false
 RedHat:
+RedHat:
   pkgs:
   - rsyslog
   service:
@@ -90,16 +87,12 @@ RedHat:
   non_kernel_facility: false
   msg_reduction: false
   manage_file_perms: true
-  perm_dir: "0755"
-  run_user: root
-  run_group: root
   rsyslog_d: /etc/rsyslog.d
   modules:
   - imjournal
   - imuxsock
   format:
     name: Rfc3164Log
-    template: '<%PRI%>%TIMESTAMP:::date-rfc3339% %HOSTNAME% %syslogtag:1:32%%msg:::sp-if-no-1st-sp%%msg%\n'
   output:
     file:
       /var/log/messages:
