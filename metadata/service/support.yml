@@ -11,3 +11,5 @@ parameters:
         enabled: false
       grafana:
         enabled: false
+      prometheus:
+        enabled: true

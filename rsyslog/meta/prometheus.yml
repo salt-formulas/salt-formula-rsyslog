@@ -1,0 +1,19 @@
+{%- from "rsyslog/map.jinja" import global with context %}
+
+{%- if global.get('enabled', False) %}
+{%- raw %}
+server:
+  alert:
+    FailedLoginsTooHigh:
+{%- endraw %}
+      {%- set threshold = prometheus_server.get('alert', {}).get('FailedAuthsTooHigh', {}).get('var', {}).get('threshold', 0.2 ) %}
+      if: >-
+        rate(failed_logins_total[5m]) > {{ threshold }}
+{%- raw %}
+      labels:
+        severity: warning
+        service: ssh
+      annotations:
+        summary: 'Too many failed SSH logins'
+        description: 'The rate of failed logins is too high on node {{ $labels.host }} (current value={{ $value }}, threshold={%- endraw %}{{ threshold }}).'
+{%- endif %}
