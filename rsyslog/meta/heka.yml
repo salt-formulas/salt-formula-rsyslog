@@ -1,4 +1,5 @@
 {%- from "rsyslog/map.jinja" import global with context %}
+{%- from "heka/map.jinja" import log_collector with context %}
 log_collector:
   decoder:
     syslog:
@@ -45,6 +46,7 @@ log_collector:
       config:
         hostname: '{{ grains.host }}'
         grace_interval: 30
+        emit_rates: {{ log_collector.emit_rates|default(True)|lower }}
 metric_collector:
   trigger:
     failed_logins_warning:
