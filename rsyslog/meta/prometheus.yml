@@ -1,4 +1,4 @@
-{%- from "rsyslog/map.jinja" import global with context %}
+{%- from "rsyslog/map.jinja" import global, monitoring with context %}
 
 {%- if global.get('enabled', False) %}
 {%- raw %}
@@ -6,7 +6,7 @@ server:
   alert:
     FailedLoginsTooHigh:
 {%- endraw %}
-      {%- set threshold = prometheus_server.get('alert', {}).get('FailedAuthsTooHigh', {}).get('var', {}).get('threshold', 0.2 ) %}
+      {%- set threshold = monitoring.failed_auths_per_sec|float %}
       if: >-
         rate(failed_logins_total[5m]) > {{ threshold }}
 {%- raw %}
