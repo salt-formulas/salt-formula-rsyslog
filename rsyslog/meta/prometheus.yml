@@ -4,7 +4,7 @@
 {%- raw %}
 server:
   alert:
-    FailedLoginsTooHigh:
+    SshFailedLoginsTooHigh:
 {%- endraw %}
       {%- set threshold = monitoring.failed_auths_per_sec|float %}
       if: >-
