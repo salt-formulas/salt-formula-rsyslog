@@ -1,3 +1,6 @@
 name: "rsyslog"
 version: "0.2"
-source: "https://github.com/tcpcloud/salt-formula-rsyslog"
+source: "https://github.com/salt-formulas/salt-formula-rsyslog"
+dependencies:
+- name: heka
+  source: https://github.com/salt-formulas/salt-formula-heka
