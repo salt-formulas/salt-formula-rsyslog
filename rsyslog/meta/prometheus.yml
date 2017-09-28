@@ -16,4 +16,15 @@ server:
       annotations:
         summary: 'Too many failed SSH logins'
         description: 'The rate of failed logins is too high on node {{ $labels.host }} (current value={{ $value }}, threshold={%- endraw %}{{ threshold }}).'
+    OutOfMemoryTooHigh:
+      {%- set threshold = monitoring.out_of_memory_errors_per_sec|float %}
+      if: >-
+        rate(out_of_memory_total[5m]) > {{ threshold }}
+{%- raw %}
+      labels:
+        severity: warning
+        service: system
+      annotations:
+        summary: 'Too many out-of-memory errors'
+        description: 'The rate of out-of-memory errors is too high on node {{ $labels.host }} (current value={{ $value }}, threshold={%- endraw %}{{ threshold }}).'
 {%- endif %}
