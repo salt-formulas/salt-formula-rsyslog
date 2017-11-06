@@ -70,6 +70,30 @@ Rsyslog service with precise timestamps, severity, facility.
               createmode: 0640
               umask: 0022
               stop_processing: true
+              
+RainerScript Support for module configuration
+=============================================
+
+In addition to support for the legacy format, `modules <http://www.rsyslog.com/doc/v8-stable/configuration/modules/index.html>`_ can be configured using the `RainerScript <http://www.rsyslog.com/doc/v8-stable/rainerscript/index.html>`_ format.
+
+.. code-block:: yaml
+
+    rsyslog:
+      client:
+        enabled: true
+        rainerscript:
+          imjournal:
+            PersistStateInterval: 200
+            StateFile: /run/systemd/journal/rsyslog
+            IgnorePreviousMessages: on
+        output
+          file:
+            -/var/log/syslog:
+              filter: *.*;auth,authpriv.none
+              owner: syslog
+              group: adm
+              createmode: 0640
+              umask: 0022
 
 Custom templates
 ================
