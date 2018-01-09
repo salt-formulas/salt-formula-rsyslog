@@ -10,6 +10,6 @@ Vcs-Git: https://github.com/tcpcloud/salt-formula-rsyslog.git
 
 Package: salt-formula-rsyslog
 Architecture: all
-Depends: ${misc:Depends}, salt-master, reclass
+Depends: ${misc:Depends}
 Description: rsyslog salt formula
  Install and configure rsyslog system.
