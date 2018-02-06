@@ -71,6 +71,52 @@ Rsyslog service with precise timestamps, severity, facility.
               umask: 0022
               stop_processing: true
 
+Rsyslog service with RainerScript (module, ruleset, template, input).
+
+.. code-block:: yaml
+
+  rsyslog:
+    client:
+      run_user: syslog
+      run_group: adm
+      enabled: true
+      rainerscript:
+        module:
+          imfile: {}
+        input:
+          imfile:
+            nginx:
+              File: "/var/log/nginx/*.log"
+              Tag: "nginx__"
+              Severity: "notice"
+              Facility: "local0"
+              PersistStateInterval: "0"
+              Ruleset: "myapp_logs"
+            apache2:
+              File: "/var/log/apache2/*.log"
+              Tag: "apache2__"
+              Severity: "notice"
+              Facility: "local0"
+              Ruleset: "myapp_logs"
+              PersistStateInterval: "0"
+            rabbitmq:
+              File: "/var/log/rabbitmq/*.log"
+              Tag: "rabbitmq__"
+              Severitet: "notice"
+              Facility: "local0"
+              PersistStateInterval: "0"
+              Ruleset: "myapp_logs"
+        template:
+          ImfileFilePath:
+            parameter:
+              type: string
+              string: "<%PRI%>%TIMESTAMP:::date-rfc3339% %HOSTNAME% %syslogtag:1:32%%$.suffix%%msg:::sp-if-no-1st-sp%%msg%\n"
+        ruleset:
+          remote_logs:
+            description: 'action(type="omfwd" Target="172.16.10.92" Port="10514" Protocol="udp" Template="ImfileFilePath")'
+          myapp_logs:
+            description: 'set $.suffix=re_extract($!metadata!filename, "(.*)/([^/]*[^/.log])", 0, 2, "all.log"); call remote_logs'
+
 Custom templates
 ================
 
