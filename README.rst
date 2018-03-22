@@ -102,7 +102,7 @@ Rsyslog service with RainerScript (module, ruleset, template, input).
             rabbitmq:
               File: "/var/log/rabbitmq/*.log"
               Tag: "rabbitmq__"
-              Severitet: "notice"
+              Severity: "notice"
               Facility: "local0"
               PersistStateInterval: "0"
               Ruleset: "myapp_logs"
@@ -116,6 +116,72 @@ Rsyslog service with RainerScript (module, ruleset, template, input).
             description: 'action(type="omfwd" Target="172.16.10.92" Port="10514" Protocol="udp" Template="ImfileFilePath")'
           myapp_logs:
             description: 'set $.suffix=re_extract($!metadata!filename, "(.*)/([^/]*[^/.log])", 0, 2, "all.log"); call remote_logs'
+
+Rsyslog service with GNU TLS encryption for forwarding the messages (omfwd module with gtls network stream driver).
+
+.. code-block:: yaml
+
+  rsyslog:
+    client:
+      pkgs:
+        - rsyslog-gnutls
+        - rsyslog
+      run_user: syslog
+      run_group: adm
+      enabled: true
+      certs:
+        /etc/rsyslog.d/key.pem: |
+          -----BEGIN RSA PRIVATE KEY-----
+          -----END RSA PRIVATE KEY-----
+        /etc/rsyslog.d/cert.pem: |
+          -----BEGIN CERTIFICATE-----
+          -----END CERTIFICATE-----
+        /etc/rsyslog.d/ca.pem: |
+          -----BEGIN CERTIFICATE-----
+          -----END CERTIFICATE-----
+      rainerscript:
+        global:
+          defaultNetstreamDriverCAFile: "/etc/rsyslog.d/ca.pem"
+          defaultNetstreamDriverKeyFile: "/etc/rsyslog.d/key.pem"
+          defaultNetstreamDriverCertFile: "/etc/rsyslog.d/cert.pem"
+      output:
+        remote:
+          somehost.domain:
+            action: 'action(type="omfwd" Target="172.16.10.92" Port="20514" Protocol="tcp" streamDriver="gtls" streamDriverauthMode="anon" streamDriverMode="1")'
+            filter: "*.*"
+            enabled: true
+
+Rsyslog service with RELP TLS encryption for forwarding the messages (omrelp module).
+
+.. code-block:: yaml
+
+  rsyslog:
+    client:
+      pkgs:
+        - rsyslog-relp
+        - rsyslog
+      run_user: syslog
+      run_group: adm
+      enabled: true
+      certs:
+        /etc/rsyslog.d/key.pem: |
+          -----BEGIN RSA PRIVATE KEY-----
+          -----END RSA PRIVATE KEY-----
+        /etc/rsyslog.d/cert.pem: |
+          -----BEGIN CERTIFICATE-----
+          -----END CERTIFICATE-----
+        /etc/rsyslog.d/ca.pem: |
+          -----BEGIN CERTIFICATE-----
+          -----END CERTIFICATE-----
+      rainerscript:
+        module:
+          omrelp: {}
+      output:
+        remote:
+          somehost.domain:
+            action: 'action(type="omrelp" target="172.16.10.92" port="20514" tls="on" tls.caCert="/etc/rsyslog.d/ca.pem" tls.myCert="/etc/rsyslog.d/cert.pem" tls.myPrivKey="/etc/rsyslog.d/key.pem" tls.authmode="name" tls.permittedpeer=["remote.example.com"])'
+            filter: "*.*"
+            enabled: true
 
 Custom templates
 ================
