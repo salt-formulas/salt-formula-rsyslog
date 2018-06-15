@@ -153,10 +153,3 @@ RedHat:
 {%- endload %}
 {%- set global = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('rsyslog:client')) %}
 {%- set server = salt['pillar.get']('rsyslog:server', {}) %}
-
-{%- set monitoring = salt['grains.filter_by']({
-  'default': {
-    'failed_auths_per_sec': 0.2,
-    'out_of_memory_errors_per_sec': 0.0011,
-  },
-}, grain='os_family', merge=salt['pillar.get']('rsyslog:monitoring')) %}

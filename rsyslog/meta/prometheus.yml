@@ -1,8 +1,0 @@
-{%- from "rsyslog/map.jinja" import global, monitoring with context %}
-
-{%- if global.get('enabled', False) %}
-{%- raw %}
-server:
-  alert: []
-{%- endraw %}
-{%- endif %}
