@@ -26,7 +26,7 @@ Debian:
       /var/log/syslog:
         sync: false
         filter: "*.*;auth,authpriv.none"
-        owner: syslog
+        user: syslog
         group: adm
         createmode: "0640"
         umask: "0022"
@@ -34,7 +34,7 @@ Debian:
       /var/log/auth.log:
         sync: true
         filter: "auth,authpriv.*"
-        owner: syslog
+        user: syslog
         group: adm
         createmode: "0640"
         umask: "0022"
@@ -42,7 +42,7 @@ Debian:
       /var/log/kern.log:
         sync: false
         filter: "kern.*"
-        owner: syslog
+        user: syslog
         group: adm
         createmode: "0640"
         umask: "0022"
@@ -50,7 +50,7 @@ Debian:
       /var/log/mail.log:
         sync: false
         filter: "mail.*"
-        owner: syslog
+        user: syslog
         group: adm
         createmode: "0640"
         umask: "0022"
@@ -59,7 +59,7 @@ Debian:
         sync: false
         action: /var/log/mail.err
         filter: mail.err
-        owner: syslog
+        user: syslog
         group: adm
         createmode: "0640"
         umask: "0022"
@@ -105,7 +105,7 @@ RedHat:
       /var/log/messages:
         sync: true
         filter: "*.info;mail.none;authpriv.none;cron.none"
-        owner: root
+        user: root
         group: adm
         createmode: "0640"
         umask: "0022"
@@ -113,7 +113,7 @@ RedHat:
       /var/log/secure:
         sync: true
         filter: "authpriv.*"
-        owner: root
+        user: root
         group: adm
         createmode: "0640"
         umask: "0022"
@@ -121,7 +121,7 @@ RedHat:
       /var/log/maillog:
         sync: true
         filter: "mail.*"
-        owner: root
+        user: root
         group: adm
         createmode: "0640"
         umask: "0022"
@@ -129,7 +129,7 @@ RedHat:
       /var/log/cron:
         sync: true
         filter: "cron.*"
-        owner: root
+        user: root
         group: adm
         createmode: "0640"
         umask: "0022"
@@ -137,7 +137,7 @@ RedHat:
       /var/log/spooler:
         sync: true
         filter: "uucp,news.crit"
-        owner: root
+        user: root
         group: adm
         createmode: "0640"
         umask: "0022"
@@ -145,7 +145,7 @@ RedHat:
       /var/log/boot.log:
         sync: false
         filter: "local7.*"
-        owner: root
+        user: root
         group: adm
         createmode: "0640"
         umask: "0022"

@@ -1,7 +1,7 @@
 {%- from "rsyslog/map.jinja" import global with context %}
 
 rsyslog_packages:
-  pkg.latest:
+  pkg.installed:
   - names: {{ global.pkgs }}
 
 rsyslog_service:

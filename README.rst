@@ -31,31 +31,31 @@ Rsyslog service with precise timestamps, severity, facility.
           file:
             -/var/log/syslog:
               filter: *.*;auth,authpriv.none
-              owner: syslog
+              user: syslog
               group: adm
               createmode: 0640
               umask: 0022
             /var/log/auth.log:
               filter: auth,authpriv.*
-              owner: syslog
+              user: syslog
               group: adm
               createmode: 0640
               umask: 0022
             -/var/log/kern.log:
               filter: kern.*
-              owner: syslog
+              user: syslog
               group: adm
               createmode: 0640
               umask: 0022
            -/var/log/mail.log:
               filter: mail.*
-              owner: syslog
+              user: syslog
               group: adm
               createmode: 0640
               umask: 0022
             /var/log/mail.err:
               filter: mail.err
-              owner: syslog
+              user: syslog
               group: adm
               createmode: 0640
               umask: 0022
@@ -65,7 +65,7 @@ Rsyslog service with precise timestamps, severity, facility.
               filter: "daemon.*;mail.*; news.err; *.=debug;*.=info;*.=notice;*.=warn":
            -/var/log/your-app.log:
               filter: "if $programname startswith 'your-app' then"
-              owner: syslog
+              user: syslog
               group: adm
               createmode: 0640
               umask: 0022
