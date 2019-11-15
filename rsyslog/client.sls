@@ -85,6 +85,7 @@ rsyslog_cacert_chain_client:
   - mode: "{{ type['createmode'] }}"
   - owner: {{ type['owner'] }}
   - group: {{ type['group'] }}
+  - relpace: False
   - watch:
     - file: /etc/rsyslog.conf
   - watch_in:
