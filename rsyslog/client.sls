@@ -35,7 +35,7 @@ rsyslog_public_cert_client:
   file.managed:
   - name: {{ cert_file }}
   - contents_pillar: rsyslog:client:ssl:cert
-  - owner: {{ global.run_user }}
+  - user: {{ global.run_user }}
   - group: {{ global.run_group }}
   - mode: 0400
   - require:
@@ -51,7 +51,7 @@ rsyslog_private_key_client:
   file.managed:
   - name: {{ key_file }}
   - contents_pillar: rsyslog:client:ssl:key
-  - owner: {{ global.run_user }}
+  - user: {{ global.run_user }}
   - group: {{ global.run_group }}
   - mode: 0400
   - require:
@@ -67,7 +67,7 @@ rsyslog_cacert_chain_client:
   file.managed:
   - name: {{ ca_file }}
   - contents_pillar: rsyslog:client:ssl:cacert_chain
-  - owner: {{ global.run_user }}
+  - user: {{ global.run_user }}
   - group: {{ global.run_group }}
   - mode: 0400
   - require:
@@ -83,9 +83,9 @@ rsyslog_cacert_chain_client:
 {{ output }}:
   file.managed:
   - mode: "{{ type['createmode'] }}"
-  - owner: {{ type['owner'] }}
+  - user: {{ type['user'] }}
   - group: {{ type['group'] }}
-  - relpace: False
+  - replace: False
   - watch:
     - file: /etc/rsyslog.conf
   - watch_in:
