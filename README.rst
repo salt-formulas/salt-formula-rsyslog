@@ -246,6 +246,21 @@ To skip the log_collector configuration, set the **skip_log_collector** to true.
               filter: "if $programname startswith 'your-app' then"
               skip_log_collector: true
 
+
+Create config file in catalog - /etc/rsyslog.d/ with content which is specified
+================
+
+This is the configuration file - /etc/rsyslog.d/rootsh.conf with the contents after creation.
+
+.. code-block:: yaml
+
+    rsyslog:
+      rsyslogd:
+        rootsh.conf:
+          content: |
+            "if $programname == 'rootsh' then ~"
+          
+
 Read more
 =========
 
