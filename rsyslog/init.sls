@@ -6,5 +6,7 @@ include:
 {%- if pillar.rsyslog.client is defined %}
 - rsyslog.client
 {%- endif %}
+{%- if pillar.rsyslog.rsyslogd is defined %}
+- rsyslog.rsyslogd
 {%- endif %}
 
