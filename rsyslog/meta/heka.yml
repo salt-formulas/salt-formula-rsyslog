@@ -18,7 +18,7 @@ log_collector:
     {%- if salt.get('rsyslog_util.syslog_file_match', None) %}
     {%- set file_match = salt['rsyslog_util.syslog_file_match'](global.output) %}
     {%- if file_match|length > 0 %}
-    {%- for logdir, pattern in file_match.iteritems() %}
+    {%- for logdir, pattern in file_match.items() %}
     syslog{{ logdir.replace('/', '_') }}:
       engine: logstreamer
       log_directory: "{{ logdir }}"
